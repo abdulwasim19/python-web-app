@@ -1,15 +1,174 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>NovaOps</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>NovaOps Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-    <h1>🚀 Welcome to NovaOps</h1>
-    <p>Your personal Cloud & DevOps Command Center.</p>
+    <div class="container">
+
+        <!-- Header -->
+
+        <header>
+            <div>
+                <h1>🚀 NovaOps</h1>
+                <p>Cloud & DevOps Command Center</p>
+            </div>
+
+            <div class="status">
+                ● System Online
+            </div>
+        </header>
+
+
+        <!-- Dashboard Cards -->
+
+        <section class="dashboard">
+
+            <div class="card">
+                <h3>Total Tasks</h3>
+                <div class="number">
+                    {{ total_tasks }}
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Completed</h3>
+                <div class="number">
+                    {{ completed_tasks }}
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Python Progress</h3>
+                <div class="number">
+                    65%
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Cloud Status</h3>
+                <div class="number">
+                    🟢
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- Task Manager -->
+
+        <section class="task-section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>📋 My Tasks</h2>
+                    <p>Manage your daily development tasks.</p>
+                </div>
+
+            </div>
+
+
+            <!-- Add Task Form -->
+
+            <form action="/add-task"
+                  method="POST"
+                  class="task-form">
+
+                <input
+                    type="text"
+                    name="task"
+                    placeholder="Enter a new task..."
+                    required
+                >
+
+                <button type="submit">
+                    + Add Task
+                </button>
+
+            </form>
+
+
+            <!-- Task List -->
+
+            <div class="task-list">
+
+                {% for task in tasks %}
+
+                <div class="task">
+
+                    <div class="task-info">
+
+                        {% if task.completed %}
+
+                        <span class="completed">
+                            ✓
+                        </span>
+
+                        <span class="completed-text">
+                            {{ task.title }}
+                        </span>
+
+                        {% else %}
+
+                        <span class="pending">
+                            ○
+                        </span>
+
+                        <span>
+                            {{ task.title }}
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <a href="/complete/{{ task.id }}"
+                           class="complete-btn">
+                            {% if task.completed %}
+                                Undo
+                            {% else %}
+                                Complete
+                            {% endif %}
+                        </a>
+
+                        <a href="/delete/{{ task.id }}"
+                           class="delete-btn">
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- Footer -->
+
+        <footer>
+            NovaOps • Built with Python & Flask 🚀
+        </footer>
+
+    </div>
 
 </body>
 
